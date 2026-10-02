@@ -1,32 +1,4 @@
 
-Loading older messages…
-User attachment
-
-Worked for 1m 36s
-
-from pathlib import Path
-p=Path("/mnt/data/WorthXI_GB_FIXED/app.py")
-print(p.exists(), p.stat().st_size if p.exists() else None)
-if p.exists():
-    txt=p.read_text(encoding="utf-8")
-    print(txt[:5000])
-True 125182
-import streamlit as st
-
-def format_market_value(value):
-    """Display EUR market values compactly (e.g. €105.5M, €950K)."""
-    try:
-        value = float(value)
-    except (TypeError, ValueError):
-        return "—"
-    sign = "-" if value < 0 else ""
-    value = abs(value)
-    if value >= 1_000_000:
-        return f"{sign}€{value / 1_000_000:.1f}M".replace(".0M", "M")
-    if value >= 1_000:
-        return f"{sign}€{value / 1_000:.1f}K".replace(".0K", "K")
-    return f"{sign}€{value:,.0f}"
-
 import pandas as pd
 import numpy as np
 import joblib
