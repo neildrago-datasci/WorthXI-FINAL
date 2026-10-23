@@ -1166,7 +1166,8 @@ with tab_value:
     with c1:
         metric_card("Actual market value", money(actual_value), accent=True)
     with c2:
-        metric_card("WorthXI estimated", money(predicted_value), accent=True)
+        valuation_arrow = "↓" if value_gap > 0 else "↑" if value_gap < 0 else "→"
+        metric_card("WorthXI estimated", f"{valuation_arrow} {money(predicted_value)}", accent=True)
     with c3:
         metric_card("Absolute gap", money(abs(value_gap)))
 
@@ -1450,8 +1451,20 @@ with tab_history:
             "Season", "Age", "Goals", "Assists",
             "Goal_Contribution", "Market_Value_EUR", "WorthXI Estimate"
         ]].copy()
+        history_display["WorthXI Direction"] = np.select(
+            [
+                history_display["WorthXI Estimate"] > history_display["Market_Value_EUR"],
+                history_display["WorthXI Estimate"] < history_display["Market_Value_EUR"],
+            ],
+            ["↑", "↓"],
+            default="→",
+        )
+        history_display["WorthXI Estimate"] = (
+            history_display["WorthXI Direction"] + " " +
+            history_display["WorthXI Estimate"].map(money)
+        )
         history_display["Market_Value_EUR"] = history_display["Market_Value_EUR"].map(money)
-        history_display["WorthXI Estimate"] = history_display["WorthXI Estimate"].map(money)
+        history_display = history_display.drop(columns=["WorthXI Direction"])
         history_display = history_display.rename(columns={
             "Market_Value_EUR": "Actual Value",
             "WorthXI Estimate": "WorthXI Estimate"
