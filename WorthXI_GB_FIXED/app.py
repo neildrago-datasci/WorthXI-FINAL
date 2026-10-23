@@ -1,4 +1,5 @@
 import streamlit as st
+import os
 
 def format_market_value(value):
     """Display EUR market values compactly (e.g. €105.5M, €950K)."""
