@@ -20,7 +20,6 @@ import joblib
 import plotly.express as px
 import plotly.graph_objects as go
 import requests
-import os
 from pathlib import Path
 
 # ============================================================
@@ -442,6 +441,16 @@ html, body, [class*="css"] {
     font-weight:900;
     letter-spacing:-1.8px;
     margin-top:5px;
+}
+
+.estimate-arrow {
+    color:#7daeff;
+    display:inline-block;
+    font-size:32px;
+    font-weight:900;
+    line-height:1;
+    margin-right:7px;
+    vertical-align:2px;
 }
 
 .value-sub {
@@ -1123,9 +1132,10 @@ with tab_overview:
             unsafe_allow_html=True
         )
     with c2:
+        estimate_arrow = "↓" if value_gap > 0 else "↑" if value_gap < 0 else "→"
         st.markdown(
             f'<div class="value-card"><div class="value-label">WorthXI estimate</div>'
-            f'<div class="value-number">{money(predicted_value)}</div>'
+            f'<div class="value-number"><span class="estimate-arrow">{estimate_arrow}</span>{money(predicted_value)}</div>'
             f'<div class="value-sub">Gradient Boosting estimate</div></div>',
             unsafe_allow_html=True
         )
